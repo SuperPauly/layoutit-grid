@@ -34,6 +34,15 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=workspace] .area-editor').should('exist')
     })
 
+    it('applies shared embeddable theme styles to split views', () => {
+      cy.visit('http://localhost:3000/?embeddable=1')
+      cy.get('[data-testid=controls-panel]').should('have.class', 'layout-editor-theme')
+      cy.get('[data-testid=workspace]').should('have.class', 'layout-editor-theme')
+      cy.get('[data-testid=controls-panel]').should(($panel) => {
+        expect(getComputedStyle($panel[0]).backgroundColor).to.not.equal('rgba(0, 0, 0, 0)')
+      })
+    })
+
     it('registers and removes the keydown listener on workspace mount/unmount', () => {
       cy.visit('http://localhost:3000/?embeddable=1', {
         onBeforeLoad(win) {
