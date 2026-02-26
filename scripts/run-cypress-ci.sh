@@ -10,16 +10,26 @@ install_linux_deps_if_needed() {
     return 0
   fi
 
+  # Ubuntu 24.04+ uses the t64 (64-bit transition) package names; older releases use bare names.
+  cups_pkg="libcups2"
+  asound_pkg="libasound2"
+  if apt-cache show libcups2t64 >/dev/null 2>&1; then
+    cups_pkg="libcups2t64"
+  fi
+  if apt-cache show libasound2t64 >/dev/null 2>&1; then
+    asound_pkg="libasound2t64"
+  fi
+
   echo "Installing Linux dependencies required by Cypress..."
   apt-get update
   apt-get install -y \
     xvfb \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
-    libcups2t64 \
+    "$cups_pkg" \
     libgtk-3-0 \
     libgbm1 \
-    libasound2t64 \
+    "$asound_pkg" \
     libnss3 \
     libxss1 \
     libxshmfence1 \
@@ -35,9 +45,9 @@ install_linux_deps_if_needed() {
 }
 
 ensure_cypress() {
-  if ! cypress verify >/dev/null 2>&1; then
+  if ! npx cypress verify >/dev/null 2>&1; then
     echo "Cypress binary not found, installing..."
-    cypress install
+    npx cypress install
   fi
 }
 
@@ -45,7 +55,7 @@ install_linux_deps_if_needed
 ensure_cypress
 
 if command -v xvfb-run >/dev/null 2>&1; then
-  exec xvfb-run -a cypress run "$@"
+  exec xvfb-run -a npx cypress run "$@"
 fi
 
 echo "xvfb-run not found and automatic install is not available."
