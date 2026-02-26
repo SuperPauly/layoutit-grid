@@ -1,6 +1,7 @@
 <template>
   <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['r']">
     <div :class="['sidebar', { active: currentView === 'props' }]" data-testid="controls-sidebar">
+      <h2 class="layout-editor-title" data-testid="layout-editor-title">Layout Editor</h2>
       <AreaProps :area="currentArea" />
     </div>
   </vue-resizable>
@@ -66,6 +67,18 @@ defineProps<{ area }>()
       transform: translateX(0);
     }
   }
+}
+
+.layout-editor-title {
+  margin: 0;
+  padding: 12px 16px;
+  color: var(--color-gray-lightest);
+  background: var(--color-gray-dark);
+  border-bottom: 1px solid var(--color-gray-middle);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 768px) {
