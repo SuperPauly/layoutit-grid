@@ -7,7 +7,12 @@ This guide gives AI coding agents (including Codex) a reliable, repo-specific op
 - Stack: Vue 3 + Vite single-page app for CSS Grid layout generation.
 - Package manager in docs: `pnpm` (preferred), while `npm` equivalents are also available in `package.json`.
 - Primary code: `src/` (components, composables, store, utils, styles).
+<<<<<<< codex/2026-02-26/15-04-49/add-unit-tests-for-state-mutations
 - E2E tests: `cypress/` and unit tests: `tests/unit/`.
+=======
+- E2E tests: `cypress/`.
+- Unit tests: `tests/unit/` (Vitest).
+>>>>>>> main
 - No GitHub Actions workflows currently exist under `.github/workflows`.
 - No `Dockerfile` or `docker-compose.yml` currently exist in this repository.
 
@@ -41,8 +46,11 @@ Use these commands as first-line validation:
 - Build (with type checking): `pnpm run build` (fallback: `npm run build`)
 - Build (without type checking): `pnpm run build-no-typing` (fallback: `npm run build-no-typing`)
 - Unit tests: `pnpm run test:unit` (fallback: `npm run test:unit`)
+<<<<<<< codex/2026-02-26/15-04-49/add-unit-tests-for-state-mutations
 - Unit tests (watch): `pnpm run test:unit:watch` (fallback: `npm run test:unit:watch`)
 - Unit tests CI shell: `pnpm run test:ci:unit` (fallback: `npm run test:ci:unit`)
+=======
+>>>>>>> main
 - Cypress tests: `pnpm test` (fallback: `npm test`) with dev server running on `http://localhost:3000`
 - Cypress CI shell: `pnpm run test:ci` (fallback: `npm run test:ci`)
 
