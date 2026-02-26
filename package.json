@@ -11,7 +11,8 @@
     "lint": "eslint --ext .js,.vue src",
     "lint:fix": "eslint --ext .js,.vue src --fix",
     "test:open": "cypress open",
-    "test": "cypress run"
+    "test": "cypress run",
+    "test:ci": "./scripts/run-cypress-ci.sh"
   },
   "dependencies": {
     "@vueuse/core": "^6.0.0",
@@ -24,12 +25,12 @@
   "devDependencies": {
     "@cypress/vue": "^3.1.1",
     "@cypress/webpack-dev-server": "^1.8.1",
-    "cypress": "^9.4.1",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vitejs/plugin-vue": "^1.9.4",
     "@vue/compiler-sfc": "3.2.47",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "cypress": "^9.4.1",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
