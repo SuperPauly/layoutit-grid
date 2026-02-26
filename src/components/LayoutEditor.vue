@@ -1,4 +1,9 @@
 <template>
+  <!--
+    Layout-editor-only boundary: mount only controls + area workspace.
+    Legacy right-side UI is intentionally excluded (code sidebar/export actions,
+    GitHub CTA, version selector, and brand header/logo blocks).
+  -->
   <PropsSidebar :area="mainArea" />
   <button
     class="mobile-controls-toggle"
@@ -19,6 +24,10 @@ import { loadFromStorage, useAppState } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
 
 let { mainArea, currentView } = $(useAppState())
+
+// Primary route composition contract:
+// `LayoutEditor` intentionally avoids mounting deprecated UI components
+// like SidebarRight/LiveCode/BrandLogo/VersionLabel.
 
 function toggleProps() {
   currentView = currentView === 'props' ? 'editor' : 'props'

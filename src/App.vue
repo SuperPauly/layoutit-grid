@@ -1,4 +1,10 @@
 <template>
+  <!--
+    Layout-editor-only composition boundary (default route):
+    only controls sidebar + workspace are mounted through <LayoutEditor />.
+    Excluded legacy UI blocks: code/export sidebar, GitHub button,
+    version selector, and brand header/logo controls.
+  -->
   <LayoutEditor v-if="!showEmbeddableViews" />
   <div v-else class="embeddable-demo">
     <LayoutEditorControlsView />
@@ -15,6 +21,10 @@ import LayoutEditorControlsView from './components/LayoutEditorControlsView.vue'
 import LayoutEditorWorkspaceView from './components/LayoutEditorWorkspaceView.vue'
 
 const showEmbeddableViews = new URLSearchParams(window.location.search).get('embeddable') === '1'
+
+// Keep default app composition strictly layout-editor-only.
+// The embeddable mode still uses the same controls/workspace split and must not
+// reintroduce legacy code/export/github/version/brand header UI blocks.
 
 onMounted(async () => {
   registerSW({ immediate: true })

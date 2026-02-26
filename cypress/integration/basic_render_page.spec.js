@@ -1,6 +1,15 @@
 /// <reference types="cypress" />
 
 describe('Layoutit! Basic Page Render', () => {
+  const excludedUiMarkers = [
+    '.code-sidebar',
+    '.btn-github',
+    '[data-testid=version-selector]',
+    '.brand-logo',
+    'CodePen',
+    'Stackblitz',
+  ]
+
   const assertLayoutEditorOnlyUi = () => {
     // Right code/output panel and code editor controls
     cy.get('.code-sidebar').should('not.exist')
@@ -40,6 +49,23 @@ describe('Layoutit! Basic Page Render', () => {
   describe('Controls sidebar', () => {
     it('controls sidebar should be rendered', () => {
       cy.get('[data-testid=controls-sidebar]').should('exist')
+    })
+  })
+
+  describe('Layout editor only composition boundary', () => {
+    it('primary route never mounts SidebarRight, LiveCode, BrandLogo, VersionLabel, github or export controls', () => {
+      assertLayoutEditorOnlyUi()
+    })
+
+    it('keeps marker-based selectors absent to catch UI reintroduction', () => {
+      excludedUiMarkers.forEach((marker) => {
+        if (marker.startsWith('.') || marker.startsWith('[')) {
+          cy.get(marker).should('not.exist')
+          return
+        }
+
+        cy.contains('button, a, span, div', marker).should('not.exist')
+      })
     })
   })
 
