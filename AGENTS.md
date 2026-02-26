@@ -8,6 +8,7 @@ This guide gives AI coding agents (including Codex) a reliable, repo-specific op
 - Package manager in docs: `pnpm` (preferred), while `npm` equivalents are also available in `package.json`.
 - Primary code: `src/` (components, composables, store, utils, styles).
 - E2E tests: `cypress/`.
+- Unit tests: `tests/unit/` (Vitest).
 - No GitHub Actions workflows currently exist under `.github/workflows`.
 - No `Dockerfile` or `docker-compose.yml` currently exist in this repository.
 - Agent-facing guidance also lives in `.github/copilot-instructions.md`.
@@ -22,6 +23,9 @@ This guide gives AI coding agents (including Codex) a reliable, repo-specific op
 - `src/generateCode.js`: generated output logic.
 - `src/styles/layout-editor-shared.css`: shared styles used by embeddable workspace/control views.
 - `cypress/`: browser tests and support commands.
+- `tests/unit/`: Vitest coverage for pure store/data mutation logic.
+- `scripts/run-unit-ci.sh`: CI-friendly unit-test runner (non-browser).
+- `scripts/run-cypress-ci.sh`: CI-friendly Cypress runner (browser/E2E).
 - `vite.config.ts`: Vite + Vue + PWA + custom plugin configuration.
 
 ## Required Working Style
@@ -38,16 +42,9 @@ Use these commands as first-line validation:
 - Lint: `pnpm run lint` (fallback: `npm run lint`)
 - Build (with type checking): `pnpm run build` (fallback: `npm run build`)
 - Build (without type checking): `pnpm run build-no-typing` (fallback: `npm run build-no-typing`)
+- Unit tests: `pnpm run test:unit` (fallback: `npm run test:unit`)
 - Cypress tests: `pnpm test` (fallback: `npm test`) with dev server running on `http://localhost:3000`
-- Preferred Linux/CI Cypress path: `pnpm run test:ci` (fallback: `npm run test:ci`), which calls `scripts/run-cypress-ci.sh`.
-
-
-## Mandatory Cypress Execution Order
-When working on testable code paths, follow this exact sequence:
-1. Install Node dependencies (`pnpm install` / `npm install`).
-2. Immediately run the Cypress wrapper once dependencies are present: `pnpm run test:ci` (or `npm run test:ci`). This is mandatory because `scripts/run-cypress-ci.sh` installs/verifies Cypress and system packages first.
-3. Implement code edits and add/update tests as behavior changes are introduced (new, removed, or refactored logic must receive matching tests during development).
-4. Run the same wrapper again after all edits to validate the final code + test set: `pnpm run test:ci` (or `npm run test:ci`).
+- Cypress CI shell: `pnpm run test:ci` (fallback: `npm run test:ci`)
 
 ## CI/CD and Runtime Compatibility Rules
 Because this repository may evolve, agents must always verify infra files before coding:
@@ -96,3 +93,9 @@ After every task that changes repository structure, configuration, commands, wor
 - Treat this update as the **last step** after all code/config/test edits are complete.
 
 Failure to update this file when repository realities change is considered an incomplete task.
+
+## Layout-Editor-Only Boundary Notes
+- The primary app composition is intentionally limited to controls + workspace (`LayoutEditor`, `LayoutEditorControlsView`, `LayoutEditorWorkspaceView`).
+- Legacy right-side code/export and brand header UI components were removed as obsolete (including `SidebarRight.vue`, `LiveCode.vue`, `PropsHeader.vue`, `BrandLogo.vue`, `VersionLabel.vue`).
+- Regression checks for excluded UI markers (`code-sidebar`, `btn-github`, `version-selector`, `brand-logo`, `CodePen`, `Stackblitz`) live in `cypress/integration/basic_render_page.spec.js`.
+

@@ -93,4 +93,52 @@ describe('Layoutit! Editor core workflows', () => {
     cy.get('[data-testid="area-accordion-item-delete-me"]').should('not.exist')
     cy.get('.area-editor[data-area-name="delete-me"]').should('not.exist')
   })
+
+  describe('mobile context workflows', () => {
+    beforeEach(() => {
+      cy.viewport(390, 844)
+      cy.openApp()
+    })
+
+    it('keeps workspace visible while toggling controls and supports nested-grid touch workflows', () => {
+      cy.get('[data-testid="workspace"]').as('workspace').should('be.visible')
+      cy.get('@workspace').should('have.css', 'display').and('not.eq', 'none')
+
+      cy.get('[data-testid="mobile-controls-toggle"]').click()
+      cy.get('[data-testid="controls-sidebar"]').should('have.class', 'active').and('be.visible')
+      cy.get('@workspace').should('be.visible')
+      cy.get('@workspace').should('have.css', 'display').and('not.eq', 'none')
+
+      cy.get('[data-testid="mobile-controls-toggle"]').click()
+      cy.get('[data-testid="controls-sidebar"]').should('not.have.class', 'active')
+      cy.get('@workspace').should('be.visible')
+      cy.get('@workspace').should('have.css', 'display').and('not.eq', 'none')
+
+      cy.get('.grid-cell[data-col-start="1"][data-row-start="1"]').first().trigger('pointerdown', {
+        pointerType: 'touch',
+        isPrimary: true,
+        force: true,
+      })
+
+      cy.get('[data-testid="area-selection-name"]').should('be.visible').type('mobile nested')
+      cy.get('[data-testid="area-selection-save"]').click()
+
+      cy.get('[data-testid="area-accordion-item-mobile-nested"]').click()
+      cy.get('[data-testid="area-add-subgrid-mobile-nested"]').click({ force: true })
+
+      cy.get('[data-testid="add-column"]').click()
+      cy.get('[data-testid="column-unit-1"]').select('%')
+      cy.get('[data-testid="column-size-1"]').clear().type('60')
+
+      cy.get('.area-editor[data-area-name="mobile-nested"]').as('mobileNestedArea').should('exist')
+      cy.get('@mobileNestedArea').should('have.css', 'display', 'grid')
+      cy.get('@mobileNestedArea').should('have.css', 'grid-template-columns').and('include', '60%')
+
+      cy.get('[data-testid="area-accordion-item-mobile-nested"]').click()
+      cy.get('body').type('{del}')
+
+      cy.get('[data-testid="area-accordion-item-mobile-nested"]').should('not.exist')
+      cy.get('.area-editor[data-area-name="mobile-nested"]').should('not.exist')
+    })
+  })
 })
