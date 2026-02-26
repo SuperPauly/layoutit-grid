@@ -24,6 +24,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', onResize)
+  onResize.cancel()
 })
 
 function handleResize() {

@@ -287,10 +287,12 @@ export function handlePointerEventsInteraction(event, { onmove, onup, onclick })
 
 export function debounce(func, timeout = 300) {
   let timer
-  return (...args) => {
+  const debounced = (...args) => {
     clearTimeout(timer)
     timer = setTimeout(() => {
       func.apply(this, args)
     }, timeout)
   }
+  debounced.cancel = () => clearTimeout(timer)
+  return debounced
 }

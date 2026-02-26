@@ -57,14 +57,14 @@ describe('Layoutit! Basic Page Render', () => {
     })
 
     it('removes the same resize listener reference on props sidebar unmount', () => {
-      cy.visit('http://localhost:3000/?embeddable=1', {
+      cy.visit('http://localhost:3000/', {
         onBeforeLoad(win) {
           cy.spy(win, 'addEventListener').as('addEventListener')
           cy.spy(win, 'removeEventListener').as('removeEventListener')
         },
       })
 
-      cy.visit('http://localhost:3000/')
+      cy.visit('http://localhost:3000/?embeddable=1')
 
       cy.get('@addEventListener').then((addSpy) => {
         const resizeAddCall = addSpy
