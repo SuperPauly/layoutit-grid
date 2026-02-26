@@ -4,9 +4,9 @@
       <div class="items">
         <div class="items-header" title="Defines the track sizing functions of the grid columns.">
           <h2>grid-template-columns</h2>
-          <OptionsButton class="add-button" @click="addCol(grid, '1fr')">add<span>+</span></OptionsButton>
+          <OptionsButton data-testid="add-column" class="add-button" @click="addCol(grid, '1fr')">add<span>+</span></OptionsButton>
         </div>
-        <div v-for="column in colsNumber" :key="column" class="area-size">
+        <div v-for="column in colsNumber" :key="column" class="area-size" :data-testid="`column-track-${column}`">
           <div
             :data-col="column"
             class="input-container"
@@ -22,6 +22,7 @@
               }"
               :type="getColUnit(grid, column - 1) === 'minmax' ? 'text' : 'number'"
               :aria-label="`column ${column} size`"
+              :data-testid="`column-size-${column}`"
               min="0"
               step="0.5"
               @focus="currentFocus = { on: 'track', grid, type: 'col', track: column }"
@@ -37,12 +38,14 @@
               "
               class="unit-select"
               :aria-label="`column ${column} unit`"
+              :data-testid="`column-unit-${column}`"
               @input="onColUnitInput($event.target.value, column - 1)"
             />
 
             <OptionsButton
               class="remove-button"
               :aria-label="`remove column ${column}`"
+              :data-testid="`remove-column-${column}`"
               @click="removeCol(area, column - 1)"
               @mouseover.stop="currentHover = { on: 'track', grid, type: 'col', track: column, action: 'remove' }"
               @mouseleave="currentHover = null"
@@ -57,9 +60,9 @@
       <div class="items">
         <div class="items-header" title="Defines track sizing functions of the grid rows.">
           <h2>grid-template-rows</h2>
-          <OptionsButton class="add-button" @click="addRow(grid, '1fr')">add<span>+</span></OptionsButton>
+          <OptionsButton data-testid="add-row" class="add-button" @click="addRow(grid, '1fr')">add<span>+</span></OptionsButton>
         </div>
-        <div v-for="row in rowsNumber" :key="row" class="area-size">
+        <div v-for="row in rowsNumber" :key="row" class="area-size" :data-testid="`row-track-${row}`">
           <div
             :data-row="row"
             class="input-container"
@@ -75,6 +78,7 @@
               }"
               :type="getRowUnit(grid, row - 1) === 'minmax' ? 'text' : 'number'"
               :aria-label="`row ${row} size`"
+              :data-testid="`row-size-${row}`"
               min="0"
               step="0.5"
               @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
@@ -88,12 +92,14 @@
                 isFocused('row', row) || !!(dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))
               "
               :aria-label="`row ${row} unit`"
+              :data-testid="`row-unit-${row}`"
               @input="onRowUnitInput($event.target.value, row - 1)"
             />
 
             <OptionsButton
               class="remove-button"
               :aria-label="`remove row ${row}`"
+              :data-testid="`remove-row-${row}`"
               @click="removeRow(area, row - 1)"
               @mouseover.stop="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
               @mouseleave="currentHover = null"

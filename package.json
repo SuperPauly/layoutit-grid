@@ -18,7 +18,7 @@
     "@vueuse/core": "^6.0.0",
     "nanoid": "^3.1.23",
     "pepjs": "0.5.3",
-    "vue": "^3.2.47",
+    "vue": "3.2.47",
     "vue-global-api": "^0.2.4",
     "vue-resizable": "^2.0.5"
   },
@@ -28,7 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vitejs/plugin-vue": "^1.9.4",
-    "@vue/compiler-sfc": "^3.2.47",
+    "@vue/compiler-sfc": "3.2.47",
     "@vue/eslint-config-typescript": "^7.0.0",
     "cypress": "^9.4.1",
     "eslint": "^7.27.0",

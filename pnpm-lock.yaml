@@ -18,7 +18,7 @@ importers:
         specifier: 0.5.3
         version: 0.5.3
       vue:
-        specifier: ^3.2.47
+        specifier: 3.2.47
         version: 3.2.47
       vue-global-api:
         specifier: ^0.2.4
@@ -43,7 +43,7 @@ importers:
         specifier: ^1.9.4
         version: 1.10.2(vite@2.9.18)
       '@vue/compiler-sfc':
-        specifier: ^3.2.47
+        specifier: 3.2.47
         version: 3.2.47
       '@vue/eslint-config-typescript':
         specifier: ^7.0.0

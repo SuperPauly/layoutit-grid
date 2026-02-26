@@ -6,8 +6,15 @@
     </div>
     <div class="area-size">
       <div class="input-container">
-        <input :value="gap.value" aria-label="gap value" type="number" min="0" @input="setGapValue($event)" />
-        <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event)" />
+        <input
+          :value="gap.value"
+          :data-testid="`${type}-gap-value`"
+          aria-label="gap value"
+          type="number"
+          min="0"
+          @input="setGapValue($event)"
+        />
+        <UnitSelect :value="gap.unit" :data-testid="`${type}-gap-unit`" aria-label="gap unit" @input="setGapUnit($event)" />
       </div>
     </div>
   </div>

@@ -1,0 +1,96 @@
+/// <reference types="cypress" />
+
+describe('Layoutit! Editor core workflows', () => {
+  beforeEach(() => {
+    cy.openApp()
+  })
+
+  it('adds and removes rows and columns from grid controls', () => {
+    cy.get('[data-testid^="column-track-"]').its('length').as('initialColumns')
+    cy.get('[data-testid^="row-track-"]').its('length').as('initialRows')
+
+    cy.get('[data-testid="add-column"]').click()
+    cy.get('[data-testid="add-row"]').click()
+
+    cy.get('@initialColumns').then((initialColumns) => {
+      cy.get('[data-testid^="column-track-"]').should('have.length', Number(initialColumns) + 1)
+      cy.get(`[data-testid="remove-column-${Number(initialColumns) + 1}"]`).click()
+      cy.get('[data-testid^="column-track-"]').should('have.length', Number(initialColumns))
+    })
+
+    cy.get('@initialRows').then((initialRows) => {
+      cy.get('[data-testid^="row-track-"]').should('have.length', Number(initialRows) + 1)
+      cy.get(`[data-testid="remove-row-${Number(initialRows) + 1}"]`).click()
+      cy.get('[data-testid^="row-track-"]').should('have.length', Number(initialRows))
+    })
+  })
+
+  it('changes track units and reflects changes in controls and grid styles', () => {
+    cy.get('[data-testid="column-unit-1"]').select('%')
+    cy.get('[data-testid="column-size-1"]').clear().type('40')
+    cy.get('.area-editor').first().should('have.css', 'grid-template-columns').and('include', '40%')
+
+    cy.get('[data-testid="column-unit-1"]').select('auto')
+    cy.get('[data-testid="column-size-1"]').should('not.be.visible')
+    cy.get('.area-editor').first().should('have.css', 'grid-template-columns').and('include', 'auto')
+
+    cy.get('[data-testid="row-unit-1"]').select('px')
+    cy.get('[data-testid="row-size-1"]').clear().type('120')
+    cy.get('.area-editor').first().should('have.css', 'grid-template-rows').and('include', '120px')
+
+    cy.get('[data-testid="row-unit-1"]').select('fr')
+    cy.get('[data-testid="row-size-1"]').clear().type('2')
+    cy.get('.area-editor').first().should('have.css', 'grid-template-rows').and('include', '2fr')
+  })
+
+  it('edits row and column gaps and updates styles', () => {
+    cy.get('[data-testid="row-gap-unit"]').select('px')
+    cy.get('[data-testid="row-gap-value"]').clear().type('18')
+
+    cy.get('[data-testid="col-gap-unit"]').select('px')
+    cy.get('[data-testid="col-gap-value"]').clear().type('26')
+
+    cy.get('.area-editor').first().should('have.css', 'row-gap').and('eq', '18px')
+    cy.get('.area-editor').first().should('have.css', 'column-gap').and('eq', '26px')
+  })
+
+  it('creates a child area, converts it to nested subgrid, and edits nested properties', () => {
+    cy.get('.grid-cell[data-col-start="1"][data-row-start="1"]').first().trigger('pointerdown', {
+      button: 0,
+      pointerType: 'mouse',
+      force: true,
+    })
+
+    cy.get('[data-testid="area-selection-name"]').should('be.visible').type('nested area')
+    cy.get('[data-testid="area-selection-save"]').click()
+
+    cy.get('[data-testid="area-accordion-item-nested-area"]').click()
+    cy.get('[data-testid="area-add-subgrid-nested-area"]').click({ force: true })
+
+    cy.get('[data-testid="add-column"]').click()
+    cy.get('[data-testid="column-unit-1"]').select('px')
+    cy.get('[data-testid="column-size-1"]').clear().type('80')
+
+    cy.get('.area-editor[data-area-name="nested-area"]').should('have.css', 'display', 'grid')
+    cy.get('.area-editor[data-area-name="nested-area"]').should('have.css', 'grid-template-columns').and('include', '80px')
+  })
+
+  it('selects and deletes a grid item from the editor', () => {
+    cy.get('.grid-cell[data-col-start="2"][data-row-start="1"]').first().trigger('pointerdown', {
+      button: 0,
+      pointerType: 'mouse',
+      force: true,
+    })
+
+    cy.get('[data-testid="area-selection-name"]').type('delete-me')
+    cy.get('[data-testid="area-selection-save"]').click()
+
+    cy.get('[data-testid="area-accordion-item-delete-me"]').click()
+    cy.get('.area-editor[data-area-name="delete-me"]').should('exist')
+
+    cy.get('body').type('{del}')
+
+    cy.get('[data-testid="area-accordion-item-delete-me"]').should('not.exist')
+    cy.get('.area-editor[data-area-name="delete-me"]').should('not.exist')
+  })
+})
