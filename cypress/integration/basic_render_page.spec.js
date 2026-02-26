@@ -24,6 +24,33 @@ describe('Layoutit! Basic Page Render', () => {
     it('toggle button should exist for mobile use', () => {
       cy.get('[data-testid=mobile-controls-toggle]').should('exist')
     })
+
+    it('opens and closes controls drawer without blocking workspace interactions', () => {
+      cy.viewport(390, 844)
+      cy.openApp()
+
+      cy.get('[data-testid=workspace]').should('be.visible')
+
+      cy.get('[data-testid=mobile-controls-toggle]').click()
+      cy.get('[data-testid=controls-sidebar]').should('have.class', 'active').and('be.visible')
+
+      cy.get('[data-testid=mobile-controls-toggle]').click()
+      cy.get('[data-testid=controls-sidebar]').should('not.have.class', 'active')
+      cy.get('[data-testid=workspace]').should('be.visible')
+
+      cy.get('[data-testid=workspace] .area-editor').then(($editor) => {
+        const pointerDownSpy = cy.spy().as('pointerDownSpy')
+        $editor[0].addEventListener('pointerdown', pointerDownSpy, { once: true })
+      })
+
+      cy.get('[data-testid=workspace] .area-editor').trigger('pointerdown', {
+        pointerType: 'touch',
+        isPrimary: true,
+        force: true,
+      })
+
+      cy.get('@pointerDownSpy').should('have.been.calledOnce')
+    })
   })
 
   describe('Embeddable views', () => {
