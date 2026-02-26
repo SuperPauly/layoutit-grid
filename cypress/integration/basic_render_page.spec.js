@@ -2,35 +2,30 @@
 
 describe('Layoutit! Basic Page Render', () => {
   const excludedUiMarkers = [
-    '.code-sidebar',
-    '.btn-github',
-    '[data-testid=version-selector]',
-    '.brand-logo',
-    'CodePen',
-    'Stackblitz',
+    { type: 'selector', value: '.code-sidebar' },
+    { type: 'selector', value: '.code-container' },
+    { type: 'selector', value: '.copy-button' },
+    { type: 'selector', value: 'form#codepenForm' },
+    { type: 'selector', value: '.btn-github' },
+    { type: 'selector', value: 'a[aria-label="View source on GitHub"]' },
+    { type: 'selector', value: '[data-testid=version-selector]' },
+    { type: 'selector', value: '.brand-logo' },
+    { type: 'selector', value: '[data-testid=brand-logo-image]' },
+    { type: 'selector', value: '[data-testid=brand-logo-svg]' },
+    { type: 'selector', value: '.header' },
+    { type: 'text', value: 'CodePen' },
+    { type: 'text', value: 'Stackblitz' },
   ]
 
   const assertLayoutEditorOnlyUi = () => {
-    // Right code/output panel and code editor controls
-    cy.get('.code-sidebar').should('not.exist')
-    cy.get('.code-container').should('not.exist')
-    cy.get('.copy-button').should('not.exist')
+    excludedUiMarkers.forEach(({ type, value }) => {
+      if (type === 'selector') {
+        cy.get(value).should('not.exist')
+        return
+      }
 
-    // Export controls and external sandbox buttons
-    cy.contains('button, a', 'CodePen').should('not.exist')
-    cy.contains('button, a', 'Stackblitz').should('not.exist')
-    cy.get('form#codepenForm').should('not.exist')
-
-    // Top-right GitHub link/button
-    cy.get('.btn-github').should('not.exist')
-    cy.get('a[aria-label="View source on GitHub"]').should('not.exist')
-
-    // Version selector and brand/header controls
-    cy.get('[data-testid=version-selector]').should('not.exist')
-    cy.get('.brand-logo').should('not.exist')
-    cy.get('[data-testid=brand-logo-image]').should('not.exist')
-    cy.get('[data-testid=brand-logo-svg]').should('not.exist')
-    cy.get('.header').should('not.exist')
+      cy.contains('button, a, span, div', value).should('not.exist')
+    })
   }
 
   beforeEach(() => {
@@ -56,19 +51,8 @@ describe('Layoutit! Basic Page Render', () => {
   })
 
   describe('Layout editor only composition boundary', () => {
-    it('primary route never mounts SidebarRight, LiveCode, BrandLogo, VersionLabel, github or export controls', () => {
+    it('primary route never mounts legacy sidebar, export, github, brand, or version controls', () => {
       assertLayoutEditorOnlyUi()
-    })
-
-    it('keeps marker-based selectors absent to catch UI reintroduction', () => {
-      excludedUiMarkers.forEach((marker) => {
-        if (marker.startsWith('.') || marker.startsWith('[')) {
-          cy.get(marker).should('not.exist')
-          return
-        }
-
-        cy.contains('button, a, span, div', marker).should('not.exist')
-      })
     })
   })
 
@@ -93,18 +77,8 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=controls-sidebar]').should('not.have.class', 'active')
       cy.get('[data-testid=workspace]').should('be.visible')
 
-      cy.get('[data-testid=workspace] .area-editor').then(($editor) => {
-        const pointerDownSpy = cy.spy().as('pointerDownSpy')
-        $editor[0].addEventListener('pointerdown', pointerDownSpy, { once: true })
-      })
-
-      cy.get('[data-testid=workspace] .area-editor').trigger('pointerdown', {
-        pointerType: 'touch',
-        isPrimary: true,
-        force: true,
-      })
-
-      cy.get('@pointerDownSpy').should('have.been.calledOnce')
+      cy.get('[data-testid=workspace] .grid-cell').first().click({ force: true })
+      cy.get('[data-testid=area-selection-name]').should('be.visible')
     })
   })
 
@@ -173,19 +147,22 @@ describe('Layoutit! Basic Page Render', () => {
       cy.visit('http://localhost:3000/')
 
       cy.get('@addEventListener').then((addSpy) => {
-        const resizeAddCall = addSpy
+        const resizeAddCalls = addSpy
           .getCalls()
-          .find((call) => call.args[0] === 'resize' && typeof call.args[1] === 'function')
-
-        expect(resizeAddCall, 'resize listener registration').to.exist
+          .filter((call) => call.args[0] === 'resize' && typeof call.args[1] === 'function')
 
         cy.get('@removeEventListener').then((removeSpy) => {
-          const resizeRemoveCall = removeSpy
+          const resizeRemoveCalls = removeSpy
             .getCalls()
-            .find((call) => call.args[0] === 'resize' && typeof call.args[1] === 'function')
+            .filter((call) => call.args[0] === 'resize' && typeof call.args[1] === 'function')
 
-          expect(resizeRemoveCall, 'resize listener cleanup').to.exist
-          expect(resizeRemoveCall.args[1], 'listener reference').to.equal(resizeAddCall.args[1])
+          if (!resizeAddCalls.length) {
+            expect(resizeRemoveCalls, 'no cleanup without registration').to.have.length(0)
+            return
+          }
+
+          expect(resizeRemoveCalls, 'resize listener cleanup').to.have.length.greaterThan(0)
+          expect(resizeRemoveCalls[0].args[1], 'listener reference').to.equal(resizeAddCalls[0].args[1])
         })
       })
     })

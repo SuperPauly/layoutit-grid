@@ -12,15 +12,10 @@
     "lint:fix": "eslint --ext .js,.vue src --fix",
     "test:open": "cypress open",
     "test": "cypress run",
-<<<<<<< codex/2026-02-26/15-04-49/add-unit-tests-for-state-mutations
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:ci": "./scripts/run-cypress-ci.sh",
     "test:ci:unit": "./scripts/run-unit-ci.sh"
-=======
-    "test:ci": "./scripts/run-cypress-ci.sh",
-    "test:unit": "vitest run"
->>>>>>> main
   },
   "dependencies": {
     "@vueuse/core": "^6.0.0",
@@ -44,7 +39,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.10.0",
     "husky": "^4.3.0",
-    "jsdom": "^22.1.0",
+    "jsdom": "^24.1.0",
     "lint-staged": "^11.0.0",
     "local-pkg": "^0.4.3",
     "pnpm": "^10.27.0",
@@ -59,8 +54,7 @@
     "vue-eslint-parser": "^7.6.0",
     "vue-tsc": "^0.2.1",
     "workbox-build": "6.4.0",
-    "workbox-window": "6.4.0",
-    "jsdom": "^24.1.0"
+    "workbox-window": "6.4.0"
   },
   "bugs": {
     "url": "https://github.com/leniolabs/layoutit-grid/issues"
