@@ -11,6 +11,7 @@ This guide gives AI coding agents (including Codex) a reliable, repo-specific op
 - Unit tests: `tests/unit/` (Vitest).
 - No GitHub Actions workflows currently exist under `.github/workflows`.
 - No `Dockerfile` or `docker-compose.yml` currently exist in this repository.
+- Agent-facing guidance also lives in `.github/copilot-instructions.md`.
 
 ## Source Layout (high-value paths)
 - `src/main.ts`: app bootstrapping and global editor component registration.
@@ -42,8 +43,6 @@ Use these commands as first-line validation:
 - Build (with type checking): `pnpm run build` (fallback: `npm run build`)
 - Build (without type checking): `pnpm run build-no-typing` (fallback: `npm run build-no-typing`)
 - Unit tests: `pnpm run test:unit` (fallback: `npm run test:unit`)
-- Unit tests (watch): `pnpm run test:unit:watch` (fallback: `npm run test:unit:watch`)
-- Unit tests CI shell: `pnpm run test:ci:unit` (fallback: `npm run test:ci:unit`)
 - Cypress tests: `pnpm test` (fallback: `npm test`) with dev server running on `http://localhost:3000`
 - Cypress CI shell: `pnpm run test:ci` (fallback: `npm run test:ci`)
 
@@ -74,9 +73,9 @@ If these files are added later, this section must be updated immediately.
 ## Change Checklist (execute in order)
 1. Read this `AGENTS.md` and any nested `AGENTS.md` files in target directories.
 2. Verify current infra reality (`.github/workflows`, Docker-related files, scripts).
-3. Implement code changes.
-4. Update/add tests as needed.
-5. Run lint/build/tests appropriate to the scope.
+3. Implement code changes incrementally.
+4. Add/update tests while coding (covering new, removed, and refactored behavior as changes are written).
+5. Run lint/build/tests appropriate to the scope, including a final `pnpm run test:ci` / `npm run test:ci` pass after all edits.
 6. Update docs/config affected by the change.
 7. **Final mandatory step:** update this `AGENTS.md` to reflect:
    - newly added files/processes/config,

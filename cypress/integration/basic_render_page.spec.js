@@ -77,7 +77,7 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=controls-sidebar]').should('not.have.class', 'active')
       cy.get('[data-testid=workspace]').should('be.visible')
 
-      cy.get('[data-testid=workspace] .grid-cell').first().click({ force: true })
+      cy.get('[data-testid=workspace] .grid-cell:visible').first().click()
       cy.get('[data-testid=area-selection-name]').should('be.visible')
     })
   })
@@ -129,7 +129,8 @@ describe('Layoutit! Basic Page Render', () => {
       cy.visit('http://localhost:3000/?embeddable=1')
 
       cy.get('[data-testid=workspace]').should('be.visible')
-      cy.get('[data-testid=workspace] .grid-cell').first().should('be.visible').click({ force: true })
+      cy.get('[data-testid=workspace] .grid-cell:visible').first().click()
+      cy.get('[data-testid=area-selection-name]').should('be.visible')
       cy.get('[data-testid=controls-panel]').should('be.visible')
       cy.get('[data-testid=workspace]').then(($workspace) => {
         expect($workspace[0].getBoundingClientRect().width).to.be.greaterThan(300)
