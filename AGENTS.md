@@ -8,6 +8,7 @@ This guide gives AI coding agents (including Codex) a reliable, repo-specific op
 - Package manager in docs: `pnpm` (preferred), while `npm` equivalents are also available in `package.json`.
 - Primary code: `src/` (components, composables, store, utils, styles).
 - E2E tests: `cypress/`.
+- Unit tests: `tests/unit/` (Vitest).
 - No GitHub Actions workflows currently exist under `.github/workflows`.
 - No `Dockerfile` or `docker-compose.yml` currently exist in this repository.
 
@@ -37,6 +38,7 @@ Use these commands as first-line validation:
 - Lint: `pnpm run lint` (fallback: `npm run lint`)
 - Build (with type checking): `pnpm run build` (fallback: `npm run build`)
 - Build (without type checking): `pnpm run build-no-typing` (fallback: `npm run build-no-typing`)
+- Unit tests: `pnpm run test:unit` (fallback: `npm run test:unit`)
 - Cypress tests: `pnpm test` (fallback: `npm test`) with dev server running on `http://localhost:3000`
 
 ## CI/CD and Runtime Compatibility Rules
