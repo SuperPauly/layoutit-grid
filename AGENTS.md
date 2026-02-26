@@ -16,7 +16,8 @@ This guide gives AI coding agents (including Codex) a reliable, repo-specific op
 - `src/App.vue`: main app container.
 - `src/components/`: UI/editor views and controls.
 - `src/composables/`: composition helpers for area/line naming logic.
-- `src/store.js` and `src/store/`: app state management modules.
+- `src/store.js`: main entry point for app state management.
+- `src/store/`: individual app state management modules.
 - `src/generateCode.js`: generated output logic.
 - `src/styles/layout-editor-shared.css`: shared styles used by embeddable workspace/control views.
 - `cypress/`: browser tests and support commands.
