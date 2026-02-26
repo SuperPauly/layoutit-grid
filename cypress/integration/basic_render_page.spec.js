@@ -162,11 +162,7 @@ describe('Layoutit! Basic Page Render', () => {
             return
           }
 
-          if (!resizeRemoveCalls.length) {
-            expect(resizeAddCalls, 'resize listener registration').to.have.length.greaterThan(0)
-            return
-          }
-
+          expect(resizeRemoveCalls, 'resize listener cleanup').to.have.length.greaterThan(0)
           const listenerReferences = resizeRemoveCalls.map((call) => call.args[1])
           expect(listenerReferences, 'listener reference').to.include(resizeAddCalls[0].args[1])
         })
