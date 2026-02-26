@@ -32,3 +32,19 @@
 - Keep edits minimal and scoped; avoid broad refactors.
 - Prefer existing patterns in nearby files (script setup, store/composable usage, CSS style patterns).
 - Cypress tests rely on `cy.openApp()` (`cypress/support/commands.js`) which targets `http://localhost:3000`.
+
+
+## Mandatory Cypress execution order
+For any task that changes behavior, tests, or runtime logic, run Cypress through the repository wrapper script in this order:
+
+1. Install Node dependencies (`pnpm install` or `npm install`).
+2. **Immediately after dependency installation**, run `pnpm run test:ci` (or `npm run test:ci`).
+   - This first run is required because `scripts/run-cypress-ci.sh` ensures Cypress and Linux runtime dependencies are present before execution.
+3. During implementation, write/update tests as code is added, removed, or refactored.
+4. After all code/test edits are complete, run `pnpm run test:ci` (or `npm run test:ci`) again.
+   - This final run validates the complete updated code and test set together.
+
+## Testing expectations for code changes
+- New behavior: add tests.
+- Removed behavior: remove/adjust obsolete tests.
+- Refactored behavior: keep equivalent or improved test coverage.
