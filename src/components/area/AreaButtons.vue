@@ -16,6 +16,7 @@
       class="btn-subgrid"
       title="Add subgrid"
       :style="{ background: `var(--color-add)` }"
+      :data-testid="`area-add-subgrid-${area.name}`"
       @click="subGrid(area)"
     >
       <IconSubgrid />
@@ -28,6 +29,7 @@
       aria-label="Remove area"
       class="btn-remove"
       title="Remove area"
+      :data-testid="`area-remove-${area.name}`"
       @click="removeArea(area)"
     >
       <IconRemove />
@@ -37,6 +39,7 @@
       aria-label="Clear area"
       class="btn-remove btn-clear"
       title="Clear area"
+      :data-testid="`area-clear-${area.name}`"
       @click="clearArea(area)"
     >
       <IconClear />

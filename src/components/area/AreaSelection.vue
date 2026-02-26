@@ -10,6 +10,7 @@
       ref="nameInputElement"
       v-model="selection.name"
       class="area-text"
+      data-testid="area-selection-name"
       type="text"
       placeholder="Area Name"
       aria-label="area name"
@@ -18,12 +19,19 @@
       @keyup.right="saveSelection"
       @pointerdown.stop
     />
-    <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
+    <button
+      data-testid="area-selection-remove"
+      aria-label="Remove selection"
+      class="btn-remove"
+      title="Remove Selection"
+      @click="closeSelection"
+    >
       <IconRemove />
     </button>
     <button
       :class="{ disabled: !saveEnabled }"
       class="btn-save"
+      data-testid="area-selection-save"
       aria-label="Save area"
       @click="saveEnabled ? saveSelection() : nameInputElement.focus()"
     >

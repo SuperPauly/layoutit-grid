@@ -7,6 +7,7 @@
         ? { background: `${area.color}` }
         : { 'border-left': `2px solid ${area.color}` },
     ]"
+    :data-testid="`area-accordion-item-${area.name}`"
     @click="setCurrentArea(area)"
   >
     <h1>
@@ -23,6 +24,7 @@
           v-show="area.display === 'block'"
           title="Remove this area from the grid"
           class="remove-button"
+          :data-testid="`sidebar-remove-area-${area.name}`"
           @click.stop="removeArea(area)"
         >
           <IconRemove />
@@ -31,6 +33,7 @@
           v-show="area.display !== 'block'"
           :disabled="!area.parent"
           class="remove-button clear"
+          :data-testid="`sidebar-clear-area-${area.name}`"
           title="Clear this area of subgrids"
           @click="clearArea(area)"
         >
@@ -39,6 +42,7 @@
         <OptionsButton
           v-show="area.display === 'grid'"
           class="add-area-button"
+          :data-testid="`sidebar-add-implicit-area-${area.name}`"
           title="Add implicit element to this grid area"
           @click="addImplicitArea(area)"
         >
