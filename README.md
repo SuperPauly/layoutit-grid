@@ -68,7 +68,7 @@ Cypress needs a virtual display in headless Linux environments. Use:
 pnpm run test:ci
 ```
 
-This script uses `./scripts/run-cypress-ci.sh`, which wraps Cypress with `xvfb-run` and auto-installs `xvfb` on Debian/Ubuntu runners when possible, avoiding `spawn Xvfb ENOENT` failures.
+This script uses `./scripts/run-cypress-ci.sh`, which wraps Cypress with `xvfb-run`. On Debian/Ubuntu runners it will try to install `xvfb` and related dependencies when they are not already present (for example if `xvfb-run` or common GUI libraries like `libatk-1.0.so.0` are missing), helping avoid `spawn Xvfb ENOENT` failures.
 
 ## Contributing
 
