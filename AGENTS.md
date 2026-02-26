@@ -101,3 +101,9 @@ After every task that changes repository structure, configuration, commands, wor
 - Treat this update as the **last step** after all code/config/test edits are complete.
 
 Failure to update this file when repository realities change is considered an incomplete task.
+
+## Layout-Editor-Only Boundary Notes
+- The primary app composition is intentionally limited to controls + workspace (`LayoutEditor`, `LayoutEditorControlsView`, `LayoutEditorWorkspaceView`).
+- Legacy right-side code/export and brand header UI components were removed as obsolete (including `SidebarRight.vue`, `LiveCode.vue`, `PropsHeader.vue`, `BrandLogo.vue`, `VersionLabel.vue`).
+- Regression checks for excluded UI markers (`code-sidebar`, `btn-github`, `version-selector`, `brand-logo`, `CodePen`, `Stackblitz`) live in `cypress/integration/basic_render_page.spec.js`.
+
