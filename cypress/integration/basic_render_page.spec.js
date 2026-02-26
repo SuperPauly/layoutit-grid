@@ -93,18 +93,8 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=controls-sidebar]').should('not.have.class', 'active')
       cy.get('[data-testid=workspace]').should('be.visible')
 
-      cy.get('[data-testid=workspace] .area-editor').then(($editor) => {
-        const pointerDownSpy = cy.spy().as('pointerDownSpy')
-        $editor[0].addEventListener('pointerdown', pointerDownSpy, { once: true })
-      })
-
-      cy.get('[data-testid=workspace] .area-editor').trigger('pointerdown', {
-        pointerType: 'touch',
-        isPrimary: true,
-        force: true,
-      })
-
-      cy.get('@pointerDownSpy').should('have.been.calledOnce')
+      cy.get('[data-testid=workspace] .grid-cell:visible').first().click()
+      cy.get('[data-testid=area-selection-name]').should('be.visible')
     })
   })
 
@@ -155,7 +145,8 @@ describe('Layoutit! Basic Page Render', () => {
       cy.visit('http://localhost:3000/?embeddable=1')
 
       cy.get('[data-testid=workspace]').should('be.visible')
-      cy.get('[data-testid=workspace] .grid-cell').first().should('be.visible').click({ force: true })
+      cy.get('[data-testid=workspace] .grid-cell:visible').first().click()
+      cy.get('[data-testid=area-selection-name]').should('be.visible')
       cy.get('[data-testid=controls-panel]').should('be.visible')
       cy.get('[data-testid=workspace]').then(($workspace) => {
         expect($workspace[0].getBoundingClientRect().width).to.be.greaterThan(300)
