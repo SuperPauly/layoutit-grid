@@ -55,5 +55,33 @@ describe('Layoutit! Basic Page Render', () => {
       cy.visit('http://localhost:3000/')
       cy.get('@removeEventListener').should('be.calledWith', 'keydown')
     })
+
+    it('removes the same resize listener reference on props sidebar unmount', () => {
+      cy.visit('http://localhost:3000/?embeddable=1', {
+        onBeforeLoad(win) {
+          cy.spy(win, 'addEventListener').as('addEventListener')
+          cy.spy(win, 'removeEventListener').as('removeEventListener')
+        },
+      })
+
+      cy.visit('http://localhost:3000/')
+
+      cy.get('@addEventListener').then((addSpy) => {
+        const resizeAddCall = addSpy
+          .getCalls()
+          .find((call) => call.args[0] === 'resize' && typeof call.args[1] === 'function')
+
+        expect(resizeAddCall, 'resize listener registration').to.exist
+
+        cy.get('@removeEventListener').then((removeSpy) => {
+          const resizeRemoveCall = removeSpy
+            .getCalls()
+            .find((call) => call.args[0] === 'resize' && typeof call.args[1] === 'function')
+
+          expect(resizeRemoveCall, 'resize listener cleanup').to.exist
+          expect(resizeRemoveCall.args[1], 'listener reference').to.equal(resizeAddCall.args[1])
+        })
+      })
+    })
   })
 })

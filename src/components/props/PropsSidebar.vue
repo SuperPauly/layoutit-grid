@@ -16,13 +16,14 @@ let { currentArea, currentView } = $(useAppState())
 let maxWidth = ref(0)
 let minWidth = ref(0)
 let width = ref(0)
+const onResize = debounce(handleResize)
 
 onMounted(() => {
-  window.addEventListener('resize', debounce(handleResize))
+  window.addEventListener('resize', onResize)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', debounce(handleResize))
+  window.removeEventListener('resize', onResize)
 })
 
 function handleResize() {
