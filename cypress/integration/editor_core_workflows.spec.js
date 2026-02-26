@@ -64,10 +64,10 @@ describe('Layoutit! Editor core workflows', () => {
         force: true,
       })
 
-      cy.get('[data-testid="area-selection-name"]').should('be.visible').type('nested area')
+      cy.get('[data-testid="area-selection-name"]').should('be.visible').type('nested-area')
       cy.get('[data-testid="area-selection-save"]').click()
 
-      cy.contains('[data-testid^="area-accordion-item-"]', 'nested area').click()
+      cy.contains('[data-testid^="area-accordion-item-"]', 'nested-area').click()
       cy.get('[data-testid="area-add-subgrid-nested-area"]').click({ force: true })
 
       cy.get('[data-testid="add-column"]').click()
