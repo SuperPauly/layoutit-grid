@@ -38,8 +38,11 @@ describe('Layoutit! Basic Page Render', () => {
   })
 
   describe('Controls sidebar', () => {
-    it('controls sidebar should be rendered', () => {
+    it('controls sidebar should be rendered with a layout editor heading', () => {
       cy.get('[data-testid=controls-sidebar]').should('exist')
+      cy.get('[data-testid=controls-sidebar] [data-testid=layout-editor-title]')
+        .should('be.visible')
+        .and('have.text', 'Layout Editor')
     })
   })
 
@@ -56,6 +59,9 @@ describe('Layoutit! Basic Page Render', () => {
 
       cy.get('[data-testid=mobile-controls-toggle]').click()
       cy.get('[data-testid=controls-sidebar]').should('have.class', 'active').and('be.visible')
+      cy.get('[data-testid=controls-sidebar] [data-testid=layout-editor-title]')
+        .should('be.visible')
+        .and('have.text', 'Layout Editor')
 
       cy.get('[data-testid=mobile-controls-toggle]').click()
       cy.get('[data-testid=controls-sidebar]').should('not.have.class', 'active')
@@ -93,6 +99,9 @@ describe('Layoutit! Basic Page Render', () => {
         cy.visit('http://localhost:3000/?embeddable=1')
 
         assertLayoutEditorOnlyUi()
+        cy.get('[data-testid=controls-panel] [data-testid=layout-editor-title]')
+          .should('be.visible')
+          .and('have.text', 'Layout Editor')
       })
     })
 
