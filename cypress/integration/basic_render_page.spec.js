@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
 
 describe('Layoutit! Basic Page Render', () => {
-  beforeEach(() => {
-    cy.openApp()
-  })
-
   describe('Workspace', () => {
+    beforeEach(() => {
+      cy.openApp()
+    })
+
     it('grid workspace container should be visible', () => {
       cy.get('[data-testid=workspace]').should('be.visible')
     })
@@ -15,20 +15,30 @@ describe('Layoutit! Basic Page Render', () => {
   })
 
   describe('Controls sidebar', () => {
+    beforeEach(() => {
+      cy.openApp()
+    })
+
     it('controls sidebar should be rendered', () => {
       cy.get('[data-testid=controls-sidebar]').should('exist')
     })
   })
 
   describe('Mobile controls toggle', () => {
+    beforeEach(() => {
+      cy.viewport(390, 844)
+      cy.openApp()
+    })
+
+    afterEach(() => {
+      cy.viewport(Cypress.config('viewportWidth'), Cypress.config('viewportHeight'))
+    })
+
     it('toggle button should exist for mobile use', () => {
       cy.get('[data-testid=mobile-controls-toggle]').should('exist')
     })
 
     it('opens and closes controls drawer without blocking workspace interactions', () => {
-      cy.viewport(390, 844)
-      cy.openApp()
-
       cy.get('[data-testid=workspace]').should('be.visible')
 
       cy.get('[data-testid=mobile-controls-toggle]').click()
@@ -46,7 +56,6 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=workspace] .area-editor').trigger('pointerdown', {
         pointerType: 'touch',
         isPrimary: true,
-        force: true,
       })
 
       cy.get('@pointerDownSpy').should('have.been.calledOnce')
