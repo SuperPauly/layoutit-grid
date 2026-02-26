@@ -1,14 +1,17 @@
 <template>
-  <PropsHeader @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
   <PropsSidebar :area="mainArea" />
-  <div class="area-editor-container">
+  <button
+    class="mobile-controls-toggle"
+    :aria-expanded="currentView === 'props'"
+    aria-label="Toggle layout controls"
+    data-testid="mobile-controls-toggle"
+    @click="toggleProps"
+  >
+    <IconSidebar />
+  </button>
+  <div class="area-editor-container" data-testid="workspace">
     <AreaEditor :area="mainArea" />
   </div>
-  <SidebarRight>
-    <template #body>
-      <LiveCode :area="mainArea" :save-design="saveDesign" />
-    </template>
-  </SidebarRight>
 </template>
 
 <script setup lang="ts">
@@ -17,10 +20,8 @@ import { keyMonitor } from '../utils/keyMonitor'
 
 let { mainArea, currentView } = $(useAppState())
 
-const { saveDesign } = defineProps<{ saveDesign?: (area) => string }>()
-
-function toggleView(view) {
-  currentView = currentView === view ? 'editor' : view
+function toggleProps() {
+  currentView = currentView === 'props' ? 'editor' : 'props'
 }
 
 onMounted(() => {
@@ -221,8 +222,31 @@ p {
   overflow: auto;
   align-items: center;
   justify-items: center;
+  min-width: 0;
+}
+
+.mobile-controls-toggle {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 21000;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 0;
+  background: var(--color-add);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(var(--color-black-rgb), 0.3);
+  svg {
+    fill: var(--color-white);
+    width: 1.5rem;
+    height: 1.5rem;
+  }
   @media screen and (max-width: 768px) {
-    padding-top: 48px;
+    display: flex;
   }
 }
 </style>
