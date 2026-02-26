@@ -1,10 +1,11 @@
 <template>
-  <div class="layout-editor-controls" data-testid="controls-panel">
+  <div class="layout-editor-controls layout-editor-theme" data-testid="controls-panel">
     <AreaProps :area="currentArea" />
   </div>
 </template>
 
 <script setup lang="ts">
+import '../styles/layout-editor-shared.css'
 import { useAppState } from '../store.js'
 
 let { currentArea } = $(useAppState())

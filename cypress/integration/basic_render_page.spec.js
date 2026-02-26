@@ -25,4 +25,26 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=mobile-controls-toggle]').should('exist')
     })
   })
+
+  describe('Embeddable views', () => {
+    it('renders controls and workspace split views', () => {
+      cy.visit('http://localhost:3000/?embeddable=1')
+      cy.get('[data-testid=controls-panel]').should('be.visible')
+      cy.get('[data-testid=workspace]').should('be.visible')
+      cy.get('[data-testid=workspace] .area-editor').should('exist')
+    })
+
+    it('registers and removes the keydown listener on workspace mount/unmount', () => {
+      cy.visit('http://localhost:3000/?embeddable=1', {
+        onBeforeLoad(win) {
+          cy.spy(win, 'addEventListener').as('addEventListener')
+          cy.spy(win, 'removeEventListener').as('removeEventListener')
+        },
+      })
+
+      cy.get('@addEventListener').should('be.calledWith', 'keydown')
+      cy.visit('http://localhost:3000/')
+      cy.get('@removeEventListener').should('be.calledWith', 'keydown')
+    })
+  })
 })

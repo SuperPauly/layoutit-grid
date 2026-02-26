@@ -1,10 +1,11 @@
 <template>
-  <div class="layout-editor-workspace" data-testid="workspace">
+  <div class="layout-editor-workspace layout-editor-theme" data-testid="workspace">
     <AreaEditor :area="mainArea" />
   </div>
 </template>
 
 <script setup lang="ts">
+import '../styles/layout-editor-shared.css'
 import { loadFromStorage, useAppState } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
 
