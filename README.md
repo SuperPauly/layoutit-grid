@@ -58,7 +58,33 @@ Your dev server will start and be running at
 | `pnpm install`   | Install the dependencies      |
 | `pnpm start`     | Run the project (in dev mode) |
 | `pnpm run build` | Build for deployment          |
+| `pnpm run test:unit` | Run unit tests with Vitest |
+| `pnpm run test:unit:watch` | Run Vitest in watch mode |
+| `pnpm run test:ci:unit` | Run unit tests in CI shell |
 | `pnpm run test:ci` | Run Cypress in Linux headless CI |
+
+
+#### Unit tests
+
+Pure store/data mutation behavior is covered by Vitest unit tests. Run:
+
+```bash
+pnpm run test:unit
+```
+
+For watch mode during local development:
+
+```bash
+pnpm run test:unit:watch
+```
+
+For CI-like shell execution (without browser requirements):
+
+```bash
+pnpm run test:ci:unit
+```
+
+This script uses `./scripts/run-unit-ci.sh` and keeps `./scripts/run-cypress-ci.sh` dedicated to browser-based E2E runs.
 
 #### Cypress on Linux
 
