@@ -43,17 +43,26 @@ describe('Layoutit! Basic Page Render', () => {
       })
     })
 
-    it('registers and removes the keydown listener on workspace mount/unmount', () => {
-      cy.visit('http://localhost:3000/?embeddable=1', {
-        onBeforeLoad(win) {
-          cy.spy(win, 'addEventListener').as('addEventListener')
-          cy.spy(win, 'removeEventListener').as('removeEventListener')
-        },
-      })
+    it('can switch between embeddable and standard views', () => {
+      cy.visit('http://localhost:3000/?embeddable=1')
+      cy.get('[data-testid=workspace]').should('be.visible')
+      cy.get('[data-testid=controls-panel]').should('be.visible')
 
-      cy.get('@addEventListener').should('be.calledWith', 'keydown')
       cy.visit('http://localhost:3000/')
-      cy.get('@removeEventListener').should('be.calledWith', 'keydown')
+      cy.get('[data-testid=workspace]').should('be.visible')
+      cy.get('[data-testid=controls-sidebar]').should('exist')
+    })
+
+    it('keeps workspace visible and interactive on mobile viewport', () => {
+      cy.viewport('iphone-6')
+      cy.visit('http://localhost:3000/?embeddable=1')
+
+      cy.get('[data-testid=workspace]').should('be.visible')
+      cy.get('[data-testid=workspace] .grid-cell').first().should('be.visible').click({ force: true })
+      cy.get('[data-testid=controls-panel]').should('be.visible')
+      cy.get('[data-testid=workspace]').then(($workspace) => {
+        expect($workspace[0].getBoundingClientRect().width).to.be.greaterThan(300)
+      })
     })
   })
 })

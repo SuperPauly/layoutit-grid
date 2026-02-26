@@ -58,6 +58,17 @@ Your dev server will start and be running at
 | `pnpm install`   | Install the dependencies      |
 | `pnpm start`     | Run the project (in dev mode) |
 | `pnpm run build` | Build for deployment          |
+| `pnpm run test:ci` | Run Cypress in Linux headless CI |
+
+#### Cypress on Linux
+
+Cypress needs a virtual display in headless Linux environments. Use:
+
+```bash
+pnpm run test:ci
+```
+
+This script uses `./scripts/run-cypress-ci.sh`, which wraps Cypress with `xvfb-run` and auto-installs `xvfb` on Debian/Ubuntu runners when possible, avoiding `spawn Xvfb ENOENT` failures.
 
 ## Contributing
 
