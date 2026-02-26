@@ -1,6 +1,29 @@
 /// <reference types="cypress" />
 
 describe('Layoutit! Basic Page Render', () => {
+  const assertLayoutEditorOnlyUi = () => {
+    // Right code/output panel and code editor controls
+    cy.get('.code-sidebar').should('not.exist')
+    cy.get('.code-container').should('not.exist')
+    cy.get('.copy-button').should('not.exist')
+
+    // Export controls and external sandbox buttons
+    cy.contains('button, a', 'CodePen').should('not.exist')
+    cy.contains('button, a', 'Stackblitz').should('not.exist')
+    cy.get('form#codepenForm').should('not.exist')
+
+    // Top-right GitHub link/button
+    cy.get('.btn-github').should('not.exist')
+    cy.get('a[aria-label="View source on GitHub"]').should('not.exist')
+
+    // Version selector and brand/header controls
+    cy.get('[data-testid=version-selector]').should('not.exist')
+    cy.get('.brand-logo').should('not.exist')
+    cy.get('[data-testid=brand-logo-image]').should('not.exist')
+    cy.get('[data-testid=brand-logo-svg]').should('not.exist')
+    cy.get('.header').should('not.exist')
+  }
+
   beforeEach(() => {
     cy.openApp()
   })
@@ -32,6 +55,18 @@ describe('Layoutit! Basic Page Render', () => {
       cy.get('[data-testid=controls-panel]').should('be.visible')
       cy.get('[data-testid=workspace]').should('be.visible')
       cy.get('[data-testid=workspace] .area-editor').should('exist')
+    })
+
+    ;[
+      { label: 'desktop', viewport: [1280, 800] },
+      { label: 'mobile', viewport: [390, 844] },
+    ].forEach(({ label, viewport }) => {
+      it(`does not render right-side code and brand controls in ${label} viewport`, () => {
+        cy.viewport(...viewport)
+        cy.visit('http://localhost:3000/?embeddable=1')
+
+        assertLayoutEditorOnlyUi()
+      })
     })
 
     it('applies shared embeddable theme styles to split views', () => {
