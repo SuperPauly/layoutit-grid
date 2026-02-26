@@ -1,7 +1,6 @@
 <template>
   <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['r']">
-    <div :class="['sidebar', { active: currentView === 'props' }]">
-      <div class="sidebar-logo"><BrandLogo /></div>
+    <div :class="['sidebar', { active: currentView === 'props' }]" data-testid="controls-sidebar">
       <AreaProps :area="currentArea" />
     </div>
   </vue-resizable>
@@ -58,17 +57,12 @@ defineProps<{ area }>()
     transform: translateX(-100%);
     position: fixed;
     bottom: 0;
-    top: 48px;
-    width: 100%;
+    top: 0;
+    width: 85%;
+    max-width: 320px;
     background: var(--color-gray-darkest);
-    a.brand {
-      display: none;
-    }
     &.active {
       transform: translateX(0);
-    }
-    .sidebar-logo {
-      display: none;
     }
   }
 }

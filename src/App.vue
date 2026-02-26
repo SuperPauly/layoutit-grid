@@ -1,8 +1,4 @@
 <template>
-  <!--
-    When deployed, you can use <LayoutEditor :saveDesign="..."/>
-    to get a path for the current area
-  -->
   <LayoutEditor />
 </template>
 

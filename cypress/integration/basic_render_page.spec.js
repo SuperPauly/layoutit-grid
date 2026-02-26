@@ -5,22 +5,24 @@ describe('Layoutit! Basic Page Render', () => {
     cy.openApp()
   })
 
-  describe('Sidebar: brand logo', () => {
-    it('elements should be rendered', () => {
-      cy.get('.sidebar .sidebar-logo').should('be.visible')
-      cy.get('.sidebar [data-testid=brand-logo-image]').should('be.visible')
-      cy.get('.sidebar [data-testid=brand-logo-svg]').should('be.visible')
-      cy.get('.sidebar [data-testid=version-selector]').should('be.visible')
-      cy.get('.sidebar [data-testid=version-selector]').should('have.length', 1)
+  describe('Workspace', () => {
+    it('grid workspace container should be visible', () => {
+      cy.get('[data-testid=workspace]').should('be.visible')
     })
-    it('should display v2 as default version', () => {
-      cy.get('.sidebar [data-testid=version-selector] option').should('have.length', 2)
-      cy.get('.sidebar [data-testid=version-selector]').should('have.value', 'v2')
+    it('area editor should be rendered inside the workspace', () => {
+      cy.get('[data-testid=workspace] .area-editor').should('exist')
     })
-    it('be able to change the version to v1', () => {
-      cy.get('.sidebar [data-testid=version-selector]').select('v1')
-      cy.get('.sidebar [data-testid=version-selector]').should('have.length', 0)
-      cy.get('h2').contains('Grid Columns') // is not there on v1
+  })
+
+  describe('Controls sidebar', () => {
+    it('controls sidebar should be rendered', () => {
+      cy.get('[data-testid=controls-sidebar]').should('exist')
+    })
+  })
+
+  describe('Mobile controls toggle', () => {
+    it('toggle button should exist for mobile use', () => {
+      cy.get('[data-testid=mobile-controls-toggle]').should('exist')
     })
   })
 })
